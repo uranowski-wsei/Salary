@@ -1,6 +1,66 @@
 ﻿@model SalariesModel
-<h1> Wypłaty</h1>
 
-@Html.DropDownListFor(m => m.WorkingTime,
-    new SelectList(Enum.GetNames(typeof(Salary_Distribution.Models.SalariesModel.WorkTime))),
-    "Wybierz miesiąc")
+<div class="salaries-page" id="salariesPage">
+    <div class="head">
+        <div class="head-left">
+            <h1> Wypłaty</h1>
+
+            @Html.DropDownListFor(m => m.WorkingTime,
+                new SelectList(Enum.GetNames(typeof(Salary_Distribution.Models.SalariesModel.WorkTime))),
+                "Wybierz miesiąc")
+        </div>
+        <div class="head-right" id="hoursPlace">
+
+        </div>
+    </div>
+
+    <input name="inputMoney" id="inputMoney" placeholder="Podaj budżet w danym miesiącu" /> 
+    <button id="update">Zaktualizuj</button>
+
+    <div class="body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Imię
+                    </th>
+                    <th>
+                        Nazwisko
+                    </th>
+                    <th>
+                        Brygadzista
+                    </th>
+                    <th>
+                        Stawka godzinowa
+                    </th>
+                    <th>
+                        Podstawa
+                    </th>
+                    <th>
+                        Premia
+                    </th>
+                    <th>
+                        Całość
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody id="employeesTable">
+            </tbody>
+
+            <tfoot>
+                <tr>
+                    <th>Suma</th>
+                    <th colspan="3"></th>
+                    <th id="baseSum"></th>
+                    <th id="bonusSum"></th>
+                    <th id="totalSum"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/salariesControl.js"></script>
+}

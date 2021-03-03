@@ -6,7 +6,6 @@ namespace Salary_Distribution.Models
     {
         public WorkTime WorkingTime { get; set; }
 
-
         public enum WorkTime
         {
             Styczen,
@@ -21,19 +20,6 @@ namespace Salary_Distribution.Models
             Pazdziernik,
             Listopad,
             Grudzien
-
-            //Jan = 152,
-            //Feb = 160,
-            //Mar = 184,
-            //Apr = 168,
-            //May = 152,
-            //Jun = 168,
-            //Jul = 176,
-            //Aug = 176,
-            //Sep = 176,
-            //Oct = 168,
-            //Nov = 160,
-            //Dec = 176
         }
     }
 

@@ -31,7 +31,6 @@
         
         if(responseData){
             employeesTable.innerHTML = "";
-            console.log(responseData);
             responseData.forEach(row => {
                 const tableRow = `
                     <tr>
@@ -59,9 +58,9 @@
             event.preventDefault();
             addNewEmployee()
                 .then(() => {
-                    console.log("added successfully");
+                    alert("Dodano pracownika!");
 
-                    getEmployees().then((r) => console.log(r, "then"));
+                    getEmployees();
                 })
                 .catch((err) => {
                     console.log(err);
