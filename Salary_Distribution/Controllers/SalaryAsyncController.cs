@@ -64,5 +64,59 @@ namespace Salary_Distribution.Controllers
                 WorkingTime = workTimeNumber
             };
         }
+
+        [HttpPost("savePlan")]
+        public ResponseModel SaveSalaryPlan(SalaryPlanModel salaryPlanModel)
+        {
+            try
+            {
+                SalaryPlan salaryPlan = _dbContext.SalaryPlans.First(plan => plan.MonthIndex == (int)salaryPlanModel.WorkTime);
+                salaryPlan.Budget = salaryPlanModel.Budget;
+
+                _dbContext.SaveChanges();
+
+                return new ResponseModel
+                {
+                    Message = "Edytowano plan wypłat na ten miesiąc!"
+                };
+            }
+            catch (InvalidOperationException exception)
+            {
+                _dbContext.SalaryPlans.Add(new SalaryPlan
+                {
+                    Budget = salaryPlanModel.Budget,
+                    MonthIndex = (int)salaryPlanModel.WorkTime
+                });
+                _dbContext.SaveChanges();
+
+                return new ResponseModel
+                {
+                    Message = "Dodano plan wypłat na ten miesiąc!"
+                };
+            }
+        }
+
+        [HttpGet("getPlan")]
+        public SalaryPlanModel GetSalaryPlan([FromQuery(Name = "workTime")] WorkTime workTime)
+        {
+            try
+            {
+                SalaryPlan salaryPlan = _dbContext.SalaryPlans.First(plan => plan.MonthIndex == (int)workTime);
+
+                return new SalaryPlanModel
+                {
+                    WorkTime = (WorkTime)salaryPlan.MonthIndex,
+                    Budget = salaryPlan.Budget
+                };
+            } 
+            catch(InvalidOperationException exception)
+            {
+                return new SalaryPlanModel
+                {
+                    WorkTime = workTime,
+                    Budget = 0
+                };
+            }
+        }
     }
 }

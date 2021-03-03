@@ -3,6 +3,7 @@
   const hoursPlace = document.getElementById("hoursPlace");
   const inputMoney = document.getElementById("inputMoney");
   const update = document.getElementById("update");
+  const send = document.getElementById("send");
   const salariesPage = document.getElementById("salariesPage");
 
   const baseSumElement = document.getElementById("baseSum");
@@ -17,7 +18,9 @@
   let allBonusSalariesTotal = 0;
   let salariesTotal = 0;
 
-  const updateWorkingTime = async () => {
+  let canSend = false;
+
+  const changeSalaryPlan = async () => {
     const workingTimeValue = parseInt(workingTime.value);
 
     if(!isNaN(workingTimeValue)){
@@ -36,12 +39,32 @@
       allBaseSalariesTotal = 0;
       allBonusSalariesTotal = 0;
       salariesTotal = 0;
+      budget = 0;
+      inputMoney.value = "";
+
+      await getSalaryPlan(workingTimeValue);
 
       await getEmployees();
 
       salariesPage.classList.add("loaded");
     } else {
       salariesPage.classList.remove("loaded");
+    }
+  }
+
+  const getSalaryPlan = async (workingTimeValue) => {
+    const response = await fetch("/api/salary/getPlan?workTime=" + workingTimeValue, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8"
+        },
+    });
+  
+    const responseData = await response.json();
+
+    if(responseData.budget > 0){
+      budget = responseData.budget;
+      inputMoney.value = budget;
     }
   }
 
@@ -60,16 +83,21 @@
 
           budget = parseInt(inputMoney.value);
 
+          canSend = true;
+
           if(isNaN(budget)){
             if(inputMoney.value.length === 0){
               budget = total;
+              canSend = false;
             } else {
               alert("Wprowadzona płaca ma niewłaściwy format!");
+              canSend = false;
               return false;
             }
           } else {
             if(budget < total){
               alert("Budżet jest mniejszy niż minimalna płaca pracowników!");
+              canSend = false;
               return false;
             }
           }
@@ -125,6 +153,31 @@
       }
   }
 
+  const saveSalaryPlan = async () => {
+    const workingTimeValue = parseInt(workingTime.value);
+
+    if(!canSend){
+      alert("Budżet nie jest poprawnie wyznaczony!");
+      return false;
+    }
+
+    const requestData = JSON.stringify({
+        WorkTime: workingTimeValue,
+        Budget: budget
+    });
+
+    const response = await fetch("/api/salary/savePlan", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=utf-8"
+        },
+        body: requestData
+    });
+
+    const responseJson = await response.json();
+    alert(responseJson.message);
+  }
+
   window.addEventListener("load", () => {
     workingTime.querySelectorAll("option").forEach((opt, i) => {
       if(i > 0){
@@ -133,11 +186,15 @@
     })
 
     workingTime.addEventListener("change", () => {
-      updateWorkingTime();
+      changeSalaryPlan();
     })
 
     update.addEventListener("click", () => {
       getEmployees();
+    })
+
+    send.addEventListener("click", () => {
+      saveSalaryPlan();
     })
   });
 })();

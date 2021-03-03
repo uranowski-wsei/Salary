@@ -10,7 +10,6 @@
             Salary: parseInt(document.getElementById("salary").value)
         });
 
-        console.log(requestData);
         const response = await fetch("/api/employees/add", {
             method: "POST",
             headers: {
@@ -19,7 +18,6 @@
             body: requestData
         });
         const responseJson = await response.json();
-        console.log(responseJson);
     };
 
     const getEmployees = async () => {
