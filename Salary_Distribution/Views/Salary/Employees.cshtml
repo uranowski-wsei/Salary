@@ -1,46 +1,54 @@
-﻿@model IEnumerable<Salary_Distribution.Models.EmploeesModel>
+﻿@model IEnumerable<Salary_Distribution.Models.EmployeesModel>
 <h1> Pracownicy</h1>
 
 
 <h3>Dodawanie nowego pracownika</h3>
-<div class="container">
-    <input type="text" placeholder="Imię" id="userName" />
-    <input type="text" placeholder="Nazwisko" id="userSurname" />
-    <input type="checkbox" placeholder="Brygadzista?" id="isForeman" />
-    <input type="number" placeholder="Stawka" id="salary" />
-    <input type="button" id="addButton" value="Dodaj" />
-
-</div>
+<form class="container" id="employeeForm">
+    <input type="text" name="userName" placeholder="Imię" id="userName" />
+    <input type="text" name="userSurname" placeholder="Nazwisko" id="userSurname" />
+    <label for="isForeman">Brygadzista?</label>
+    <input type="checkbox" id="isForeman" />
+    <input type="number" name="salary" placeholder="Stawka" id="salary" />
+    <input type="submit" id="addButton" value="Dodaj" />
+</form>
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Surname)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Foreman)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Salary)
-        </th>
-    </tr>
+    <thead>
+        <tr>
+            <th>
+                Imię
+            </th>
+            <th>
+                Nazwisko
+            </th>
+            <th>
+                Brygadzista
+            </th>
+            <th>
+                Stawka
+            </th>
+        </tr>
+    </thead>
 
-    @foreach (var model in Model)
-    {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => model.Name)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => model.Surname)
-    <td>
-        @Html.DisplayFor(modelItem => model.Foreman)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => model.Salary)
-    </td>
-</tr>
-    }
+    <tbody id="employeesTable">
+        @foreach (EmployeesModel item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Surname
+                <td>
+                    @(item.Foreman ? "Tak" : "Nie")
+                </td>
+                <td>
+                    @item.Salary
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
+
+@section Scripts {
+    <script src="~/js/addNewEmployee.js"></script>
+}

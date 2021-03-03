@@ -1,33 +1,44 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Salary_Distribution.Entities;
 using Salary_Distribution.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Salary_Distribution.Controllers
 {
     public class SalaryController : Controller
     {
-        [HttpGet]
+        private readonly EmployeesDbContext _dbContext;
+
+        public SalaryController(EmployeesDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
         public IActionResult Description()
         {
             return View("Description");
         }
 
-        [HttpGet]
         public IActionResult Employees()
         {
-            return View("Employees");
+            List<Employees> employeesEntities = _dbContext.Employees.ToList<Employees>();
+            List<EmployeesModel> employees = new List<EmployeesModel>();
+
+            foreach (Employees employeeEntity in employeesEntities)
+            {
+                employees.Add(new EmployeesModel
+                {
+                    Name = employeeEntity.Name,
+                    Surname = employeeEntity.Surname,
+                    Foreman = employeeEntity.Foreman,
+                    Salary = employeeEntity.Salary
+                });
+            }
+
+            return View(employees);
         }
 
-        public IActionResult ListPeople()
-        {
-            List<EmploeesModel> people = new List<EmploeesModel>();
-
-            people.Add(new EmploeesModel { Name = "Test", Surname = "Test", Salary = 10, Foreman = true });
-
-            return View(people);
-        }
-
-        [HttpGet]
         public IActionResult Salaries ()
         {
             return View("Salaries");

@@ -9,18 +9,18 @@ namespace Salary_Distribution.Models
 
         public enum WorkTime
         {
-            Styczeń,
+            Styczen,
             Luty,
             Marzec,
-            Kwiecień,
+            Kwiecien,
             Maj,
             Czerwiec,
             Lipiec,
-            Sierpień,
-            Wrzesień,
-            Październik,
+            Sierpien,
+            Wrzesien,
+            Pazdziernik,
             Listopad,
-            Grudzień
+            Grudzien
 
             //Jan = 152,
             //Feb = 160,

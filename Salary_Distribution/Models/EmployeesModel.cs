@@ -1,6 +1,6 @@
 ﻿namespace Salary_Distribution.Models
 {
-    public class EmploeesModel
+    public class EmployeesModel
     {
         public string Name { get; set; }
         public string Surname { get; set; }
