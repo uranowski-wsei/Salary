@@ -1,0 +1,6 @@
+﻿@model SalariesModel
+<h1> Wypłaty</h1>
+
+@Html.DropDownListFor(m => m.WorkingTime,
+    new SelectList(Enum.GetNames(typeof(Salary_Distribution.Models.SalariesModel.WorkTime))),
+    "Wybierz miesiąc")
