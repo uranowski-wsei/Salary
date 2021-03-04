@@ -17,7 +17,7 @@ namespace Salary_Distribution.Controllers
 
         public IActionResult Description()
         {
-            return View("Description");
+            return View();
         }
 
         public IActionResult Employees()
@@ -41,7 +41,7 @@ namespace Salary_Distribution.Controllers
 
         public IActionResult Salaries ()
         {
-            return View("Salaries");
+            return View();
         }
     }
 }
